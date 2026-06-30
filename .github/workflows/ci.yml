@@ -8,7 +8,7 @@ on:
 
 jobs: 
     frontend: 
-        # GitHub Runner
+        # GitHub Runner available on Ubuntu, Windows, and macOS. Here we are using Ubuntu.
         runs-on: ubuntu-latest
         steps: 
             - name: Checkout code
