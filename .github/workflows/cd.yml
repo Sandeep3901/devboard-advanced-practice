@@ -1,0 +1,29 @@
+# Goal: To deploy the frontend and backend images from CI steps once CI is successful.
+
+name: CD
+
+on: 
+    workflow_run:
+        workflows: ["CI"]
+        types: 
+            - completed
+        branches: [master]
+
+jobs:
+    deploy:
+        runs-on: self-hosted
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v7
+            - name: Copy .env file
+              run: cp .env.example .env
+            - name: Docker login 
+              uses: docker/login-action@v2
+              with:
+                username: ${{ vars.DOCKER_USERNAME }}
+                password: ${{ secrets.DOCKER_PASSWORD }}
+            - name: Deploy the containers with Docker Compose
+              run: |
+                docker compose pull
+                docker compose up -d
+
